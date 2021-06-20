@@ -10,14 +10,14 @@ class Cpanel extends BaseController
 	}
     public function dashboard()
     {
-        echo view('Header');
-        echo view('TI/ti_beranda');    
-        echo view('Footer');
+        return view('cpanel_item/cp_beranda');
     }
     public function buatlaporan()
     {
-        echo view('Header');
-        echo view('TI/ti_bu_laporan');
-        echo view('Footer');
+        return view('cpanel_item/cp_bu_laporan');        
+    }
+    public function statuslaporan()
+    {
+        return view('cpanel_item/cp_statuslap');
     }
 }

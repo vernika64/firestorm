@@ -28,18 +28,15 @@
 				<div class="p-4">
 		  		    <h1><a href="index.html" class="logo">SISLAP <span>Sistem Laporan</span></a></h1>
 	            <ul class="list-unstyled components mb-5">
-                    <li class="active">
-                    <a href="#"><span class="fa fa-home mr-3"></span> Dashboard</a>
+                    <li>
+                    <a href="<?= base_url('cpanel/dashboard')?>"><span class="fa fa-home mr-3"></span> Dashboard</a>
                     </li>
                     <li>
-                    <a href="#"><span class="fa fa-user mr-3"></span> Buat Laporan</a>
+                    <a href="<?= base_url('cpanel/buatlaporan')?>"><span class="fa fa-user mr-3"></span> Buat Laporan</a>
                     </li>
                     <li>
-                    <a href="#"><span class="fa fa-briefcase mr-3"></span> Laporan Diproses</a>
-                    </li>
-                    <li>
-                    <a href="#"><span class="fa fa-sticky-note mr-3"></span> Laporan Disetujui</a>
-                    </li>
+                    <a href="<?= base_url('cpanel/statuslaporan')?>"><span class="fa fa-briefcase mr-3"></span> Status Laporan</a>
+                    </li>                    
 	            </ul>
 
 	        <div class="mb-5">
@@ -62,5 +59,18 @@
     	</nav>
 
         <!-- Page Content  -->
-      <div id="content" class="p-4 p-md-5 pt-5">
-        <!--<h2 class="mb-4">Sidebar #05</h2>-->        
+    <div id="content" class="p-4 p-md-5 pt-5">
+        <!--<h2 class="mb-4">Sidebar #05</h2>-->
+
+        <?= $this->renderSection('konten'); ?>
+
+    </div>
+
+</div>
+
+</body>
+    <script src="<?= base_url('components/jquery/jquery.js'); ?>"></script>
+    <script src="<?= base_url('components/bs4/js/bootstrap.min.js'); ?>"></script>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="<?= base_url('components/sbawm/main.js'); ?>"></script>
+</html>        

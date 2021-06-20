@@ -1,1 +1,0 @@
-<h1>Buat Laporan</h1>
