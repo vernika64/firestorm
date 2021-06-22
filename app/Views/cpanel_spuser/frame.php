@@ -29,14 +29,17 @@
 		  		    <h1><a href="index.html" class="logo">SISLAP <span>Sistem Laporan</span></a></h1>
 	            <ul class="list-unstyled components mb-5">
                     <li>
-                    <a href="<?= base_url('cpanel/dashboard')?>"><span class="fa fa-home mr-3"></span> Dashboard</a>
+                    <a href="<?= base_url('cpanelsuper/dashboard')?>"><span class="fa fa-home mr-3"></span> Dashboard</a>
                     </li>
                     <li>
-                    <a href="<?= base_url('cpanel/buatlaporan')?>"><span class="fa fa-user mr-3"></span> Buat Laporan</a>
+                    <a href="<?= base_url('cpanelsuper/laporan_masuk')?>"><span class="fa fa-user mr-3"></span> Laporan Masuk</a>
                     </li>
                     <li>
-                    <a href="<?= base_url('cpanel/statuslaporan')?>"><span class="fa fa-briefcase mr-3"></span> Status Laporan</a>
-                    </li>                  
+                    <a href="<?= base_url('cpanelsuper/laporan_konfirm')?>"><span class="fa fa-user mr-3"></span> Laporan Konfirmasi</a>
+                    </li>
+                    <li>
+                    <a href="<?= base_url('cpanelsuper/laporan_acc')?>"><span class="fa fa-briefcase mr-3"></span> Laporan Acc</a>
+                    </li>
 	            </ul>
 
 	        <div class="mb-5">

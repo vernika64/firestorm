@@ -14,7 +14,21 @@
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="<?= base_url('components/grayscale/css/styles.css'); ?>" rel="stylesheet" />
-    
+    <style>
+    input::-webkit-outer-spin-button, input::-webkit-inner-spin-button 
+    {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] 
+    {
+        -moz-appearance: textfield;
+    }
+
+
+    </style>
 </head>
 
 <body id="page-top">
@@ -25,16 +39,44 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="labeldaftar">Modal title</h5>
+                    <h5 class="modal-title" id="labeldaftar">Form pendaftaran</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    ...
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
+                <form>
+                    <div class="modal-body">
+                        
+                            <div class="mb-3">
+                                <label>NIK</label>
+                                <input type="number" name="ktp" class="form-control">
+                            </div>
+                            <div class="mb-3">
+                                <label>Nama sesuai identitas</label>
+                                <input type="text" name="nama" class="form-control">
+                            </div>
+                            <div class="mb-3">
+                                <label>Tanggal Lahir</label>
+                                <input type="date" name="tgl_lhr" class="form-control">
+                            </div>
+                            <div class="mb-3">
+                                <label>Kota Asal</label>
+                                <input type="number" name="kota" class="form-control">
+                            </div>
+                            <div class="mb-3">
+                                <label>Nomor Ponsel</label>
+                                <input type="number" name="ponsel" class="form-control">
+                            </div>
+                            <div class="mb-3">
+                                <label>E-mail (opsional)</label>
+                                <input type="email" name="email" class="form-control">
+                            </div>
+
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <input type="submit" class="btn btn-primary" value="Daftar">
+                    </div>
+                </form>
                 </div>
             </div>
         </div>
