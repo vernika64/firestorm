@@ -4,7 +4,7 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class ModelPendaftaran extends Model
+class ModelBioPelapor extends Model
 {
 	protected $DBGroup              = 'default';
 	protected $table                = 'bio_pelapor';

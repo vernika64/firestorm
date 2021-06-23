@@ -4,48 +4,78 @@ namespace App\Controllers;
 
 class Cpanel extends BaseController
 {
+    // Mendeklarasi class agar bisa digunakan di setiap function di file ini
     protected $modulLaporan;
     protected $modulPelapor;
 
     public function __construct()
     {
-        $this->modulLaporan = new \App\Models\InputLaporan();
-        $this->modulPelapor = new \App\Models\ModelPendaftaran();
+        // Menggunakan model ModelBioPelapor.php dan ModelLaporan.php
+        $this->modulLaporan = new \App\Models\ModelLaporan();
+        $this->modulPelapor = new \App\Models\ModelBioPelapor();
     }
     public function masuk()
     {
+        // Mengambil data dari form menggunakan metode POST
         $user = $this->request->getVar('nik');
         $pass = $this->request->getVar('pass');
 
+        // Query untuk login
         $pintu = $this->modulPelapor->where(['kode_identitas' => $user, 'password' => $pass])->findAll();
+
+        // Menghitung jumlah hasil Query
         $list  = count($pintu);
+
+        // Jika data kosong
         if ($list == 0) {
+            // Menambah sebuah sesi sementara bernama error
             session()->setFlashdata('error', 'NIK tidak terdaftar!');
             return redirect()->to('cpanel/index');
-        } else if ($list > 1) {
+        }
+        // Jika data lebih dari 1
+        else if ($list > 1) {
+            // Menambah sebuah sesi sementara bernama error
             session()->setFlashdata('error', 'Website Error!');
+
+            // Menampilkan layout website
             return redirect()->to('cpanel/index');
-        } else {
+        }
+        // Proses akhir keputusan
+        else {
             session()->set([
                 'user_id' => $user,
             ]);
+
+            // Menampilkan layout website
             return redirect()->to('/cpanel/dashboard');
         }
     }
     public function index()
     {
+        // Menghapus sesi bernama user_id
         session()->destroy('user_id');
+
+        // Menampilkan layout website
         return view('Login');
     }
     public function dashboard()
     {
+        // Mengambil data dari session yang bernama user id
         $nana = session()->get('user_id');
+
+        // Jika class nana tidak ada datanya
         if ($nana == NULL) {
+            // Menambah data sesi sementara bernama error
             session()->setFlashdata('error', 'Silahkan login terlebih dahulu');
             return redirect()->to('/cpanel/index');
-        } else {
+        }
+        // Keputusan terakhir
+        else {
 
+            // Mengambil data dari sesion yang bernama user_id
             $user = session()->get('user_id');
+
+            // Query untuk menampilkan data dari database
             $filter = $this->modulPelapor->where(['kode_identitas' => $user])->findColumn('nama');
             $filterstr = implode("|", $filter);
             $nama = [
@@ -53,15 +83,18 @@ class Cpanel extends BaseController
                 'id'   => $user
             ];
 
+            // Menampilkan layout website
             return view('cpanel_item/cp_beranda', $nama);
         }
     }
     public function buatlaporan()
     {
+        // Menampilkan layout website
         return view('cpanel_item/cp_bu_laporan');
     }
     public function statuslaporan()
     {
+        // Menampilkan layout website
         return view('cpanel_item/cp_statuslap');
     }
     public function prosesBuatLaporan()

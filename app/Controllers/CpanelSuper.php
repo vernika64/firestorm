@@ -4,12 +4,13 @@ namespace App\Controllers;
 
 class CpanelSuper extends BaseController
 {
-    protected $modelPendaftaran;
-    protected $modelLaporanMasuk;
+    protected $modelPelapor;
+    protected $modelLaporan;
     public function __construct()
     {
-        $this->modelPendaftaran = new \App\Models\ModelPendaftaran();
-        $this->modelLaporanMasuk = new \App\Models\ModelLaporanMasuk();
+        // Menggunakan model ModelBioPelapor.php dan ModelLaporan.php
+        $this->modelPelapor = new \App\Models\ModelBioPelapor();
+        $this->modelLaporan = new \App\Models\ModelLaporan();
     }
     public function dashboard()
     {
@@ -17,7 +18,7 @@ class CpanelSuper extends BaseController
     }
     public function laporan_masuk()
     {
-        $laporan = $this->modelLaporanMasuk->findAll();
+        $laporan = $this->modelLaporan->findAll();
         $data = [
             'judul' => 'Laporan Masuk',
             'lpm'   => $laporan
@@ -35,7 +36,7 @@ class CpanelSuper extends BaseController
     }
     public function list_user()
     {
-        $list = @$this->modelPendaftaran->findAll();
+        $list = @$this->modelPelapor->findAll();
 
         $data = [
             'judul' => 'List Pelapor',

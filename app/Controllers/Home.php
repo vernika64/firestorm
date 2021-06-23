@@ -4,10 +4,12 @@ namespace App\Controllers;
 
 class Home extends BaseController
 {
-	protected $modelPendaftarans;
+	protected $modelPelapor;
+
 	public function __construct()
 	{
-		$this->modelPendaftarans = new \App\Models\ModelPendaftaran();
+		// Menggunakan model ModelLaporan.php
+		$this->modelPelapor = new \App\Models\ModelBioPelapor();
 	}
 	public function index()
 	{
@@ -15,7 +17,7 @@ class Home extends BaseController
 	}
 	public function daftar()
 	{
-		$this->modelPendaftarans->save([
+		$this->modelPelapor->save([
 			'kode_identitas'	=>	$this->request->getPost('ktp'),
 			'nama'	=>	$this->request->getPost('nama'),
 			'status'	=>	$this->request->getPost('pekerjaan'),
