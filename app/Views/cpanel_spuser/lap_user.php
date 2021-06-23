@@ -9,28 +9,23 @@
 
         <tr>
             <th>#</th>
-            <th>Tanggal Masuk</th>
-            <th>Identitas</th>
-            <th>Laporan</th>
-            <th>Tembusan</th>
+            <th>Nama</th>
+            <th>E-Mail</th>
             <th>Aksi</th>
         </tr>
 
     </thead>
     <tbody>
         <?php $no = 1; ?>
-        <?php foreach ($lpm as $x) : ?>
+        <?php foreach ($pendaftar as $w) : ?>
             <tr>
                 <td><?= $no++; ?></td>
-                <td><?= $x['tanggal_masuk']; ?></td>
-                <td><?= $x['kode_identitas']; ?></td>
-                <td><?= $x['judul_laporan']; ?></td>
-                <td><?= $x['kode_divisi']; ?></td>
+                <td><?= $w['nama']; ?></td>
+                <td><?= $w['email']; ?></td>
                 <td><a class="btn btn-danger">Hapus</a></td>
             </tr>
         <?php endforeach; ?>
     </tbody>
 
 </table>
-
 <?= $this->endSection(); ?>
