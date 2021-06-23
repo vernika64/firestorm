@@ -69,23 +69,20 @@ class Cpanel extends BaseController
             session()->setFlashdata('error', 'Silahkan login terlebih dahulu');
             return redirect()->to('/cpanel/index');
         }
-        // Keputusan terakhir
-        else {
 
-            // Mengambil data dari sesion yang bernama user_id
-            $user = session()->get('user_id');
+        // Mengambil data dari sesion yang bernama user_id
+        $user = session()->get('user_id');
 
-            // Query untuk menampilkan data dari database
-            $filter = $this->modulPelapor->where(['kode_identitas' => $user])->findColumn('nama');
-            $filterstr = implode("|", $filter);
-            $nama = [
-                'nama' => $filterstr,
-                'id'   => $user
-            ];
+        // Query untuk menampilkan data dari database
+        $filter = $this->modulPelapor->where(['kode_identitas' => $user])->findColumn('nama');
+        $filterstr = implode("|", $filter);
+        $nama = [
+            'nama' => $filterstr,
+            'id'   => $user
+        ];
 
-            // Menampilkan layout website
-            return view('cpanel_item/cp_beranda', $nama);
-        }
+        // Menampilkan layout website
+        return view('cpanel_item/cp_beranda', $nama);
     }
     public function buatlaporan()
     {
@@ -94,16 +91,50 @@ class Cpanel extends BaseController
     }
     public function statuslaporan()
     {
+        // Mengambil data dari session yang bernama user id
+        $nana = session()->get('user_id');
+
+        // Jika class nana tidak ada datanya
+        if ($nana == NULL) {
+            // Menambah data sesi sementara bernama error
+            session()->setFlashdata('error', 'Silahkan login terlebih dahulu');
+            return redirect()->to('/cpanel/index');
+        }
+
+        $listlaporan = $this->modulLaporan->findAll();
+        $kirim = ['laporan' => $listlaporan];
+
         // Menampilkan layout website
-        return view('cpanel_item/cp_statuslap');
+        return view('cpanel_item/cp_statuslap', $kirim);
     }
     public function prosesBuatLaporan()
     {
-        // $this->modulLaporan->save([
-        //     'tanggal_masuk' => $this->request->getVar('jdl_laporan'),
-        //     'desc_laporan'  => $this->request->getVar('d_laporan'),
-        //     'map_file'      => $this->request->getVar('lok_file'),
-        //     'status'        => "1",
-        // ]);
+        // Mengambil data dari session yang bernama user id
+        $nana = session()->get('user_id');
+
+        // Jika class nana tidak ada datanya
+        if ($nana == NULL) {
+            // Menambah data sesi sementara bernama error
+            session()->setFlashdata('error', 'Silahkan login terlebih dahulu');
+            return redirect()->to('/cpanel/index');
+        }
+
+        $file = $this->request->getFile('inifile');
+
+        $namaFile = $file->getRandomName();
+
+        $file->move('laporan', $namaFile);
+
+        $this->modulLaporan->save([
+            'kode_identitas'           => $nana,
+            'judul_laporan'            => $this->request->getVar('title'),
+            'desc_laporan'             => $this->request->getVar('desc'),
+            'kode_divisi'              => $this->request->getVar('kd_dvs'),
+            'map_file'                 => $namaFile,
+            'status'                   => '0'
+        ]);
+
+        session()->setFlashdata('pesan', 'Selamat, Laporan sudah terdaftar ! Mohon tunggu untuk validasi dari tim kami');
+        return redirect()->to('/cpanel/dashboard');
     }
 }

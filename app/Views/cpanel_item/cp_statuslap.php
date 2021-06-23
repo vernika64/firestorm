@@ -15,27 +15,22 @@
                 <th>Tembusan</th>
                 <th>Status</th>
                 <th>Aksi</th>
-            </tr>           
+            </tr>
         </thead>
         <tbody>
-
-            <tr>
-                <td>1</td>
-                <td>Laporan Gas Meleduk</td>
-                <td>12 Januari 2021</td>
-                <td>Divisi Penjinak Gas</td>
-                <td>OTW</td>
-                <td><button class="btn btn-primary">Detail</button></td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>Laporan Mahasiswa Kesurupan</td>
-                <td>12 Maret 2021</td>
-                <td>Divisi Penjinak Bau Bawang</td>
-                <td>TKO</td>
-                <td><button class="btn btn-primary">Detail</button></td>
-            </tr>
-        
+            <?php
+            $no = 1;
+            foreach ($laporan as $l) :
+            ?>
+                <tr>
+                    <td><?= $no++; ?></td>
+                    <td><?= $l['judul_laporan']; ?></td>
+                    <td><?= $l['tgl_lap_masuk']; ?></td>
+                    <td><?= $l['kode_divisi']; ?></td>
+                    <td><?= $l['status']; ?></td>
+                    <td><button class="btn btn-primary">Detail</button></td>
+                </tr>
+            <?php endforeach; ?>
         </tbody>
     </table>
 

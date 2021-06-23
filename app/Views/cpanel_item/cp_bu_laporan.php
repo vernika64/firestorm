@@ -5,25 +5,27 @@
 <h1>Buat Laporan</h1>
 
 <div class="container-fluid">
-    <form>
+    <form enctype="multipart/form-data" action="/cpanel/prosesbuatlaporan" method="post">
         <div class="form-group">
             <label>Judul Laporan</label>
-            <input type="text" name="jd_laporan" class="form-control" placeholder="Judul Laporan">
+            <input type="text" name="title" class="form-control" placeholder="Judul Laporan">
         </div>
         <div class="form-group">
             <label>Deskripsi Laporan</label>
-            <textarea name="ds_laporan" class="form-control" rows="4" style="height: auto !important; resize: none;"></textarea>
+            <textarea name="desc" class="form-control" rows="4" style="height: auto !important; resize: none;"></textarea>
         </div>
         <div class="form-group">
             <label>Divisi yang ingin dituju</label>
-            <select name="divisi" class="form-control">
+            <select name="kd_dvs" class="form-control">
                 <option value="fbi">FBI</option>
                 <option value="shuba">Shubapolice</option>
             </select>
         </div>
-        <div class="form-group">
-            <label>Upload file pendukung <small>(Ukuran file tidak boleh lebih dari 3MB)</small></label>
-            <input type="file" class="form-control" name="dokumen">
+        <div class="input-group mb-3">
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" id="inifile" aria-describedby="inifile" name="inifile">
+                <label class="custom-file-label" for="inifile">Upload file pendukung <small>(File tidak boleh lebih dari 1MB)</small></label>
+            </div>
         </div>
         <div class="form-group">
             <input type="submit" name="kirim" class="btn btn-primary" value="Kirim">

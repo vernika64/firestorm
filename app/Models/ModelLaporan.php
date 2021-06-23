@@ -16,16 +16,16 @@ class ModelLaporan extends Model
 	protected $protectFields        = true;
 	protected $allowedFields        = [
 		'kode_laporan',
-		'tanggal_masuk',
 		'kode_identitas',
 		'judul_laporan',
 		'desc_laporan',
 		'kode_divisi',
 		'map_file',
 		'status',
+		'tanggapan',
 		'tgl_lap_masuk',
 		'tgl_lap_update',
-		'tanggapan'
+		'tgl_lap_status'
 	];
 
 	// Dates
