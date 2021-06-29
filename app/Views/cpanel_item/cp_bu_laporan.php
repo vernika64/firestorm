@@ -17,8 +17,9 @@
         <div class="form-group">
             <label>Divisi yang ingin dituju</label>
             <select name="kd_dvs" class="form-control">
-                <option value="fbi">FBI</option>
-                <option value="shuba">Shubapolice</option>
+                <?php foreach ($divisi as $z) : ?>
+                    <option value="<?= $z['kd_divisi']; ?>"><?= $z['nama_divisi']; ?></option>
+                <?php endforeach; ?>
             </select>
         </div>
         <div class="input-group mb-3">

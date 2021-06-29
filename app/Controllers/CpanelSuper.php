@@ -12,6 +12,14 @@ class CpanelSuper extends BaseController
         $this->modelPelapor = new \App\Models\ModelBioPelapor();
         $this->modelLaporan = new \App\Models\ModelLaporan();
     }
+    public function index()
+    {
+        return view('cpanel_spuser/login');
+    }
+    public function login()
+    {
+        return view('cpanel_spuser/login');
+    }
     public function dashboard()
     {
         return view('cpanel_spuser/dashboard');

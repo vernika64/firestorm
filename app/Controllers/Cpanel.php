@@ -7,12 +7,14 @@ class Cpanel extends BaseController
     // Mendeklarasi class agar bisa digunakan di setiap function di file ini
     protected $modulLaporan;
     protected $modulPelapor;
+    protected $modulDivisi;
 
     public function __construct()
     {
         // Menggunakan model ModelBioPelapor.php dan ModelLaporan.php
         $this->modulLaporan = new \App\Models\ModelLaporan();
         $this->modulPelapor = new \App\Models\ModelBioPelapor();
+        $this->modulDivisi = new \App\Models\ModelDivisi();
     }
     public function masuk()
     {
@@ -29,7 +31,7 @@ class Cpanel extends BaseController
         // Jika data kosong
         if ($list == 0) {
             // Menambah sebuah sesi sementara bernama error
-            session()->setFlashdata('error', 'NIK tidak terdaftar!');
+            session()->setFlashdata('error', 'NIK belum terdaftar!');
             return redirect()->to('cpanel/index');
         }
         // Jika data lebih dari 1
@@ -86,8 +88,11 @@ class Cpanel extends BaseController
     }
     public function buatlaporan()
     {
+        $isiDiv = $this->modulDivisi->findAll();
+        $data = ['divisi' => $isiDiv];
+
         // Menampilkan layout website
-        return view('cpanel_item/cp_bu_laporan');
+        return view('cpanel_item/cp_bu_laporan', $data);
     }
     public function statuslaporan()
     {
@@ -119,22 +124,38 @@ class Cpanel extends BaseController
             return redirect()->to('/cpanel/index');
         }
 
-        $file = $this->request->getFile('inifile');
+        $files = $this->request->getPost('inifile');
 
-        $namaFile = $file->getRandomName();
+        if ($files == NULL) {
+            $this->modulLaporan->save([
+                'kode_identitas'           => $nana,
+                'judul_laporan'            => $this->request->getVar('title'),
+                'desc_laporan'             => $this->request->getVar('desc'),
+                'kd_divisi'                => $this->request->getVar('kd_dvs'),
+                'map_file'                 => NULL,
+                'status'                   => '0'
+            ]);
 
-        $file->move('laporan', $namaFile);
+            session()->setFlashdata('pesan', 'Selamat, Laporan sudah terdaftar ! Mohon tunggu untuk validasi dari tim kami');
+            return redirect()->to('/cpanel/dashboard');
+        } else {
+            $file = $this->request->getFile('inifile');
 
-        $this->modulLaporan->save([
-            'kode_identitas'           => $nana,
-            'judul_laporan'            => $this->request->getVar('title'),
-            'desc_laporan'             => $this->request->getVar('desc'),
-            'kode_divisi'              => $this->request->getVar('kd_dvs'),
-            'map_file'                 => $namaFile,
-            'status'                   => '0'
-        ]);
+            $namaFile = $file->getRandomName();
 
-        session()->setFlashdata('pesan', 'Selamat, Laporan sudah terdaftar ! Mohon tunggu untuk validasi dari tim kami');
-        return redirect()->to('/cpanel/dashboard');
+            $file->move('laporan', $namaFile);
+
+            $this->modulLaporan->save([
+                'kode_identitas'           => $nana,
+                'judul_laporan'            => $this->request->getVar('title'),
+                'desc_laporan'             => $this->request->getVar('desc'),
+                'kode_divisi'              => $this->request->getVar('kd_dvs'),
+                'map_file'                 => $namaFile,
+                'status'                   => '0'
+            ]);
+
+            session()->setFlashdata('pesan', 'Selamat, Laporan sudah terdaftar ! Mohon tunggu untuk validasi dari tim kami');
+            return redirect()->to('/cpanel/dashboard');
+        }
     }
 }

@@ -22,6 +22,7 @@ class ModelBioPelapor extends Model
 		'kota_asal',
 		'no_hp',
 		'email',
+		'password',
 		'tgl_daftar'
 	];
 

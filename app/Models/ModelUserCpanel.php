@@ -4,36 +4,24 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class ModelLaporan extends Model
+class ModelUserCpanel extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'laporan';
-	protected $primaryKey           = 'kode_laporan';
+	protected $table                = 'cpanel_user';
+	protected $primaryKey           = 'id';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
-	protected $allowedFields        = [
-		'kode_laporan',
-		'kode_identitas',
-		'judul_laporan',
-		'desc_laporan',
-		'kd_divisi',
-		'map_file',
-		'status',
-		'tanggapan',
-		'tgl_lap_masuk',
-		'tgl_lap_update',
-		'tgl_lap_status'
-	];
+	protected $allowedFields        = [];
 
 	// Dates
-	protected $useTimestamps        = true;
+	protected $useTimestamps        = false;
 	protected $dateFormat           = 'datetime';
-	protected $createdField         = 'tgl_lap_masuk';
-	protected $updatedField         = 'tgl_lap_update';
-	// protected $deletedField         = 'deleted_at';
+	protected $createdField         = 'created_at';
+	protected $updatedField         = 'updated_at';
+	protected $deletedField         = 'deleted_at';
 
 	// Validation
 	protected $validationRules      = [];

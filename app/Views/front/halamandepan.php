@@ -73,6 +73,16 @@
                             <label>E-mail (opsional)</label>
                             <input type="email" name="email" class="form-control">
                         </div>
+                        <hr>
+                        <div class="mb-3">
+                            <label>Buat Password Baru</label>
+                            <input type="password" name="pw_baru" class="form-control" id="pwBaru">
+                        </div>
+                        <div class="mb-3">
+                            <label>Konfirmasi Password Baru</label>
+                            <input type="password" name="pw_cek" class="form-control" id="pwCek">
+                            <div id="txtPass" style="color: green;"></div>
+                        </div>
 
 
                     </div>
@@ -248,5 +258,20 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Core theme JS-->
 <script src="<?= base_url('components/grayscale/js/scripts.js'); ?>"></script>
+<script src="<?= base_url('components/jquery/jquery.js'); ?>"></script>
+<!-- Validasi Password -->
+<script>
+    function checkPasswordMatch() {
+        var password = $("#pwBaru").val();
+        var confirmPassword = $("#pwCek").val();
+        if (password != confirmPassword)
+            $("#txtPass").html("Passwords does not match!");
+        else
+            $("#txtPass").html("Passwords match.");
+    }
+    $(document).ready(function() {
+        $("#pwCek").keyup(checkPasswordMatch);
+    });
+</script>
 
 </html>
