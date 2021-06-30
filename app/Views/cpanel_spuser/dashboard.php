@@ -2,6 +2,6 @@
 
 <?= $this->section('konten'); ?>
 
-<h1>Selamet Datang!</h1>
+<h1>Selamet Datang <?= $nama; ?></h1>
 
 <?= $this->endSection(); ?>

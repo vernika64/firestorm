@@ -44,6 +44,9 @@
                     <li>
                         <a href="<?= base_url('cpanelsuper/list_user') ?>"><span class="fa fa-briefcase mr-3"></span> List Pelapor</a>
                     </li>
+                    <li>
+                        <a href="<?= base_url('cpanelsuper/index') ?>"><span class="fa fa-briefcase mr-3"></span> Logout</a>
+                    </li>
                 </ul>
 
                 <div class="mb-5">

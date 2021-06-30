@@ -22,10 +22,10 @@
         <?php foreach ($lpm as $x) : ?>
             <tr>
                 <td><?= $no++; ?></td>
-                <td><?= $x['tanggal_masuk']; ?></td>
+                <td><?= $x['tgl_lap_masuk']; ?></td>
                 <td><?= $x['kode_identitas']; ?></td>
                 <td><?= $x['judul_laporan']; ?></td>
-                <td><?= $x['kode_divisi']; ?></td>
+                <td><?= $x['kd_divisi']; ?></td>
                 <td><a class="btn btn-danger">Hapus</a></td>
             </tr>
         <?php endforeach; ?>

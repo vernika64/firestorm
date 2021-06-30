@@ -70,21 +70,19 @@ class Cpanel extends BaseController
             // Menambah data sesi sementara bernama error
             session()->setFlashdata('error', 'Silahkan login terlebih dahulu');
             return redirect()->to('/cpanel/index');
+        } else {
+
+            // Query untuk menampilkan data dari database
+            $filter = $this->modulPelapor->where(['kode_identitas' => $nana])->findColumn('nama');
+            $filterstr = implode("|", $filter);
+            $nama = [
+                'nama' => $filterstr,
+                'id'   => $nana
+            ];
+
+            // Menampilkan layout website
+            return view('cpanel_item/cp_beranda', $nama);
         }
-
-        // Mengambil data dari sesion yang bernama user_id
-        $user = session()->get('user_id');
-
-        // Query untuk menampilkan data dari database
-        $filter = $this->modulPelapor->where(['kode_identitas' => $user])->findColumn('nama');
-        $filterstr = implode("|", $filter);
-        $nama = [
-            'nama' => $filterstr,
-            'id'   => $user
-        ];
-
-        // Menampilkan layout website
-        return view('cpanel_item/cp_beranda', $nama);
     }
     public function buatlaporan()
     {

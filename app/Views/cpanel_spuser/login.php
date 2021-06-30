@@ -53,7 +53,7 @@
                         <form class="form-login" action="/CpanelSuper/masuk" method="post">
                             <div class="form-group">
                                 <label>NIK</label>
-                                <input type="text" name="nik" class="form-control">
+                                <input type="text" name="user" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label>Password</label>
@@ -63,9 +63,7 @@
                                 <!--<input type="submit" name="submit" class="btn btn-primary btn-lebar" value="Masuk">-->
                                 <input type="submit" name="submit" class="btn btn-primary btn-lebar" value="Masuk">
                             </div>
-                            <!-- <div class="form-group">
-                                <button type="button" class="btn btn-default btn-lebar">Daftar</button>
-                            </div> -->
+
                         </form>
                     </div>
                 </div>
