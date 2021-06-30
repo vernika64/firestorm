@@ -1,1 +1,1 @@
-<h1>Selamat, anda beruntung hari ini!!</h1>
+<h1>Selamat, anda beruntung mendapatkan piring cantik!!</h1>
