@@ -5,7 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login page</title>
-    <link rel="stylesheet" href="<?= base_url(''); ?>">
+
+    <link rel="stylesheet" href="<?= base_url('components/bs4/css/bootstrap.min.css'); ?>">
     <style>
         body {
             font-family: Segoe UI !important;
@@ -49,7 +50,7 @@
                             </div>
                         <?php endif; ?>
                         <h5 class="card-title card-judul">Silahkan login terlebih dahulu</h5>
-                        <form class="form-login" action="/Cpanel/masuk" method="post">
+                        <form class="form-login" action="/CpanelSuper/masuk" method="post">
                             <div class="form-group">
                                 <label>NIK</label>
                                 <input type="text" name="nik" class="form-control">
