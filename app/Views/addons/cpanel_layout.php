@@ -29,9 +29,9 @@
             <div class="p-4">
                 <h1><a href="index.html" class="logo">SISLAP <span>Sistem Laporan</span></a></h1>
                 <ul class="list-unstyled components mb-5">
-                    <li>
+                    <!-- <li>
                         <a href="<?= base_url('cpanel/dashboard') ?>"><span class="fa fa-home mr-3"></span> Dashboard</a>
-                    </li>
+                    </li> -->
                     <li>
                         <a href="<?= base_url('cpanel/buatlaporan') ?>"><span class="fa fa-user mr-3"></span> Buat Laporan</a>
                     </li>

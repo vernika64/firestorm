@@ -49,7 +49,7 @@ class Cpanel extends BaseController
             ]);
 
             // Menampilkan layout website
-            return redirect()->to('/cpanel/dashboard');
+            return redirect()->to('/cpanel/buatlaporan');
         }
     }
     public function index()
@@ -102,13 +102,13 @@ class Cpanel extends BaseController
             // Menambah data sesi sementara bernama error
             session()->setFlashdata('error', 'Silahkan login terlebih dahulu');
             return redirect()->to('/cpanel/index');
+        } else {
+            $listlaporan = $this->modulLaporan->where(['kode_identitas' => $nana])->findAll();
+            $kirim = ['laporan' => $listlaporan];
+
+            // Menampilkan layout website
+            return view('cpanel_item/cp_statuslap', $kirim);
         }
-
-        $listlaporan = $this->modulLaporan->findAll();
-        $kirim = ['laporan' => $listlaporan];
-
-        // Menampilkan layout website
-        return view('cpanel_item/cp_statuslap', $kirim);
     }
     public function prosesBuatLaporan()
     {
@@ -135,7 +135,7 @@ class Cpanel extends BaseController
             ]);
 
             session()->setFlashdata('pesan', 'Selamat, Laporan sudah terdaftar ! Mohon tunggu untuk validasi dari tim kami');
-            return redirect()->to('/cpanel/dashboard');
+            return redirect()->to('/cpanel/statuslaporan');
         } else {
             $file = $this->request->getFile('inifile');
 
@@ -153,7 +153,7 @@ class Cpanel extends BaseController
             ]);
 
             session()->setFlashdata('pesan', 'Selamat, Laporan sudah terdaftar ! Mohon tunggu untuk validasi dari tim kami');
-            return redirect()->to('/cpanel/dashboard');
+            return redirect()->to('/cpanel/statuslaporan');
         }
     }
 }

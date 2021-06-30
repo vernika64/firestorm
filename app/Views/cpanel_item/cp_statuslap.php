@@ -3,7 +3,11 @@
 <?= $this->section('konten'); ?>
 
 <h1>Status Laporan</h1>
-
+<?php if (session()->getFlashdata('pesan')) : ?>
+    <div class="alert alert-warning" role="alert">
+        <?= session()->getFlashdata('pesan'); ?>
+    </div>
+<?php endif; ?>
 <div class="container-fluid">
 
     <table class="table">
