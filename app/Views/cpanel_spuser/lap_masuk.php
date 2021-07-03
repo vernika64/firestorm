@@ -10,7 +10,7 @@
         <tr>
             <th>#</th>
             <th>Tanggal Masuk</th>
-            <th>Identitas</th>
+            <th>Nama Pelapor</th>
             <th>Laporan</th>
             <th>Tembusan</th>
             <th>Aksi</th>
@@ -23,9 +23,15 @@
             <tr>
                 <td><?= $no++; ?></td>
                 <td><?= $x['tgl_lap_masuk']; ?></td>
-                <td><?= $x['kode_identitas']; ?></td>
+                <td><?= $x['nama']; ?></td>
                 <td><?= $x['judul_laporan']; ?></td>
-                <td><?= $x['kd_divisi']; ?></td>
+                <td>
+                    <?php
+                    $this->modelDiv = new \App\Models\ModelDivisi();
+                    $nmdiv = $this->modelDiv->where(['kd_divisi' => $x['kd_divisi']])->findColumn('nama_divisi');
+                    echo implode("|", $nmdiv);
+                    ?>
+                </td>
                 <td><a class="btn btn-danger">Hapus</a></td>
             </tr>
         <?php endforeach; ?>

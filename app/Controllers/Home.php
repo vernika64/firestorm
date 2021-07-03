@@ -36,8 +36,8 @@ class Home extends BaseController
 				'password' => $this->request->getPost('pw_baru')
 			]);
 
-			session()->setFlashdata('pesan', 'Selamat, anda sudah terdaftar! Silahkan untuk login untuk melanjutkan');
-			return  redirect()->to('/cpanel/buatlaporan');
+			session()->setFlashdata('pesan', 'Selamat, anda sudah terdaftar! Silahkan login dengan akun yang sudah anda daftarkan!');
+			return  redirect()->to('/cpanel/index');
 		} else if ($kolom >= 1) {
 			session()->setFlashdata('error', 'Kode Identitas Sudah Terdaftar');
 			return redirect()->to('cpanel/index');

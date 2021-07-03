@@ -2,17 +2,21 @@
 
 namespace App\Controllers;
 
+
+
 class CpanelSuper extends BaseController
 {
     protected $modulPelapor;
     protected $modulLaporan;
     protected $modulAdmin;
+    protected $modulDivisi;
     public function __construct()
     {
         // Menggunakan model ModelBioPelapor.php dan ModelLaporan.php
         $this->modulAdmin = new \App\Models\ModelUserCpanel();
         $this->modulPelapor = new \App\Models\ModelBioPelapor();
         $this->modulLaporan = new \App\Models\ModelLaporan();
+        $this->modulDivisi = new \App\Models\ModelDivisi();
     }
     public function index()
     {
@@ -23,6 +27,38 @@ class CpanelSuper extends BaseController
     {
         session()->destroy('user_id');
         return view('cpanel_spuser/login');
+    }
+    public function divisi()
+    {
+        $tabel = $this->modulDivisi->findAll();
+
+        $data = [
+            'judul' => 'Manajemen Divisi',
+            'tabel'  => $tabel
+        ];
+        return view('cpanel_spuser/lap_divisi', $data);
+    }
+    public function buatDivisi()
+    {
+        $kd = $this->request->getVar('kd_div');
+        $nm = $this->request->getVar('nama_div');
+
+        $tambahan = $this->modulDivisi->where('kd_divisi', $kd)->findAll();
+        $cek = count($tambahan);
+
+        if ($cek == 1) {
+            session()->setFlashdata('error', 'Error, Kode Divisi sudah terdaftar');
+            return redirect()->to('/cpanelsuper/divisi');
+        } else {
+
+            $this->modulDivisi->save([
+                'kd_divisi'       => $kd,
+                'nama_divisi'     => $nm
+            ]);
+
+            session()->setFlashdata('pesan', 'Selamat, Divisi Sudah tersimpan');
+            return redirect()->to('/cpanelsuper/divisi');
+        }
     }
     public function masuk()
     {
@@ -69,7 +105,8 @@ class CpanelSuper extends BaseController
     }
     public function laporan_masuk()
     {
-        $laporan = $this->modulLaporan->findAll();
+
+        $laporan = $this->modulLaporan->join('bio_pelapor', 'bio_pelapor.kode_identitas = laporan.kode_identitas')->where('laporan.status', 0)->findAll();
         $data = [
             'judul' => 'Laporan Masuk',
             'lpm'   => $laporan
@@ -79,11 +116,24 @@ class CpanelSuper extends BaseController
     }
     public function laporan_konfirm()
     {
-        return view('cpanel_spuser/lap_konfirm');
+        $laporan = $this->modulLaporan->join('bio_pelapor', 'bio_pelapor.kode_identitas = laporan.kode_identitas')->where('laporan.status', 1)->findAll();
+        $data = [
+            'judul' => 'Laporan Butuh Acc',
+            'lpm'   => $laporan
+        ];
+
+        return view('cpanel_spuser/lap_konfirm', $data);
     }
     public function laporan_acc()
     {
-        return view('cpanel_spuser/lap_acc');
+
+        $laporan = $this->modulLaporan->join('bio_pelapor', 'bio_pelapor.kode_identitas = laporan.kode_identitas')->where('laporan.status', 2)->findAll();
+        $data = [
+            'judul' => 'Laporan Sudah di Acc',
+            'lpm'   => $laporan
+        ];
+
+        return view('cpanel_spuser/lap_acc', $data);
     }
     public function list_user()
     {

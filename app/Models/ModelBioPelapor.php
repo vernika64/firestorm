@@ -29,8 +29,8 @@ class ModelBioPelapor extends Model
 	// Dates
 	protected $useTimestamps        = true;
 	protected $dateFormat           = 'datetime';
-	protected $createdField         = 'tgl_daftar';
-	protected $updatedField         = 'tgl_update';
+	protected $createdField         = 'tgldaftar';
+	protected $updatedField         = 'tglperbarui';
 	// protected $deletedField         = 'deleted_at';
 
 	// // Validation

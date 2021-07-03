@@ -31,7 +31,7 @@ class Cpanel extends BaseController
         // Jika data kosong
         if ($list == 0) {
             // Menambah sebuah sesi sementara bernama error
-            session()->setFlashdata('error', 'NIK belum terdaftar!');
+            session()->setFlashdata('error', 'Login Gagal, NIK belum terdaftar / password yang anda masukkan salah!');
             return redirect()->to('cpanel/index');
         }
         // Jika data lebih dari 1
@@ -86,11 +86,20 @@ class Cpanel extends BaseController
     }
     public function buatlaporan()
     {
-        $isiDiv = $this->modulDivisi->findAll();
-        $data = ['divisi' => $isiDiv];
+        $nana = session()->get('user_id');
 
-        // Menampilkan layout website
-        return view('cpanel_item/cp_bu_laporan', $data);
+        // Jika class nana tidak ada datanya
+        if ($nana == NULL) {
+            // Menambah data sesi sementara bernama error
+            session()->setFlashdata('error', 'Silahkan login terlebih dahulu');
+            return redirect()->to('/cpanel/index');
+        } else {
+            $isiDiv = $this->modulDivisi->findAll();
+            $data = ['divisi' => $isiDiv];
+
+            // Menampilkan layout website
+            return view('cpanel_item/cp_bu_laporan', $data);
+        }
     }
     public function statuslaporan()
     {

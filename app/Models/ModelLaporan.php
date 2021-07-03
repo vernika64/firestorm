@@ -25,7 +25,8 @@ class ModelLaporan extends Model
 		'tanggapan',
 		'tgl_lap_masuk',
 		'tgl_lap_update',
-		'tgl_lap_status'
+		'kd_user_ver',
+		'kd_approve'
 	];
 
 	// Dates
