@@ -27,6 +27,5 @@ class Divisi extends Migration
 
 	public function down()
 	{
-		//
 	}
 }
