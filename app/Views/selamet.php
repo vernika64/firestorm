@@ -1,1 +1,0 @@
-<h1>Selamat, anda beruntung mendapatkan piring cantik!!</h1>

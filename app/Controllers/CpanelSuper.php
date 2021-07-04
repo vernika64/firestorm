@@ -60,6 +60,23 @@ class CpanelSuper extends BaseController
             return redirect()->to('/cpanelsuper/divisi');
         }
     }
+    public function list_user_cpanel()
+    {
+        $nene = session()->get('user_id');
+        if ($nene == NULL) {
+            // Menambah data sesi sementara bernama error
+            session()->setFlashdata('error', 'Silahkan login terlebih dahulu');
+            return redirect()->to('/cpanel/index');
+        } else {
+            $user = $this->modulAdmin->findAll();
+            $data = [
+                'nama' => 'List User Cpanel',
+                'datauser' => $user
+            ];
+
+            return view('/cpanel_spuser/lap_user_cpanel', $data);
+        }
+    }
     public function masuk()
     {
 
