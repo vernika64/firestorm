@@ -1,1 +1,0 @@
-sebelum impor database dimohon buat dahulu database dengan nama "sislaps" dan kemudian impor sql ke dalam database tersebut
