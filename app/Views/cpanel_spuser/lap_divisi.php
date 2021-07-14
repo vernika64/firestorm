@@ -71,7 +71,29 @@ endif;
                 <td><?= $no++; ?></td>
                 <td><?= $max['kd_divisi']; ?></td>
                 <td><?= $max['nama_divisi']; ?></td>
-                <td><button class="btn btn-danger">Hapus</button></td>
+                <td>
+                    <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#hp-<?= $max['kd_divisi']; ?>">Hapus</button>
+                    <div class="modal fade" tabindex="-1" id="hp-<?= $max['kd_divisi']; ?>">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Attention</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Apakah anda yakin ingin menghapus divisi ini ?</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                    <a href="/cpanelsuper/hapusDivisi?id=<?= $max['kd_divisi']; ?>" class="btn btn-primary">Hapus</a>
+                                    <!-- <button type="button" class="btn btn-primary">Hapus</button> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
             </tr>
 
         <?php endforeach; ?>

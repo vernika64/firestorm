@@ -53,11 +53,11 @@ class Laporan extends Migration
 				'type'				=> 'DATETIME'
 			],
 			'kd_user_ver'			=> [
-				'type'				=> 'INT',
+				'type'				=> 'VARCHAR',
 				'constraint'		=> 20
 			],
 			'kd_approve'			=> [
-				'type'				=> 'INT',
+				'type'				=> 'VARCHAR',
 				'constraint'		=> 20
 			],
 		]);

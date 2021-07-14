@@ -54,6 +54,9 @@
                             <a href="<?= base_url('cpanelsuper/laporan_acc') ?>"><span class="fa fa-briefcase mr-3"></span> Laporan Acc</a>
                         </li>
                         <li>
+                            <a href="<?= base_url('cpanelsuper/list_lap_ditolak') ?>"><span class="fa fa-briefcase mr-3"></span> List Laporan Ditolak</a>
+                        </li>
+                        <li>
                             <a href="<?= base_url('cpanelsuper/list_user') ?>"><span class="fa fa-briefcase mr-3"></span> List Pelapor</a>
                         </li>
                         <li>

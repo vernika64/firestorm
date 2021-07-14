@@ -3,6 +3,7 @@
 <?= $this->section('konten'); ?>
 
 <h1><?= $judul; ?></h1>
+
 <?php
 if (session()->getFlashdata('pesan')) :
 ?>
@@ -16,6 +17,7 @@ if (session()->getFlashdata('error')) :
         <?= session()->getFlashdata('error'); ?>
     </div>
 <?php endif; ?>
+
 <table class="table">
     <thead>
 
@@ -68,18 +70,28 @@ if (session()->getFlashdata('error')) :
                                         <select class="form-control" name="divisi">
                                             <?php
                                             foreach ($divs as $m) {
-
-
                                             ?>
-                                                <option value="<?= $m['kd_divisi']; ?>"><?= $m['nama_divisi']; ?></option>
+                                                <option value="<?= $m['kd_divisi']; ?>" <?php
+                                                                                        if ($m['kd_divisi'] == $x['kd_divisi']) {
+                                                                                            echo "selected";
+                                                                                        } else {
+                                                                                            echo "";
+                                                                                        }; ?>>
+                                                    <?= $m['nama_divisi']; ?>
+                                                </option>
                                             <?php
                                             }
                                             ?>
                                         </select>
                                     </div>
+                                    <div class="form-group collapse" id="tolak">
+                                        <label>Berikan komentar</label>
+                                        <textarea name="reject" class="form-control" rows="4" style="height: 300px !important; resize: none; "></textarea>
+                                    </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <input type="submit" name="teruskan" class="btn btn-primary" value="Teruskan">
+                                    <input type="submit" name="konfirmasi" class="btn btn-primary" value="Teruskan">
+                                    <a type="submit" class="btn btn-danger" href="#tolak" data-toggle="collapse">Tolak</a>
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
                                 </div>
                             </form>

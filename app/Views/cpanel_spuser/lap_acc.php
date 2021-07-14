@@ -13,7 +13,6 @@
             <th>Nama Pelapor</th>
             <th>Laporan</th>
             <th>Tembusan</th>
-            <th>Aksi</th>
         </tr>
 
     </thead>
@@ -25,14 +24,7 @@
                 <td><?= $x['tgl_lap_masuk']; ?></td>
                 <td><?= $x['nama']; ?></td>
                 <td><?= $x['judul_laporan']; ?></td>
-                <td>
-                    <?php
-                    $this->modelDiv = new \App\Models\ModelDivisi();
-                    $nmdiv = $this->modelDiv->where(['kd_divisi' => $x['kd_divisi']])->findColumn('nama_divisi');
-                    echo implode("|", $nmdiv);
-                    ?>
-                </td>
-                <td><a class="btn btn-danger">Hapus</a></td>
+                <td><?= $x['nama_divisi']; ?></td>
             </tr>
         <?php endforeach; ?>
     </tbody>

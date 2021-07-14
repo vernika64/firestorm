@@ -2,7 +2,8 @@
 
 namespace App\Controllers;
 
-
+use CodeIgniter\Config\Config;
+use Config\Database;
 
 class CpanelSuper extends BaseController
 {
@@ -59,6 +60,13 @@ class CpanelSuper extends BaseController
             session()->setFlashdata('pesan', 'Selamat, Divisi Sudah tersimpan');
             return redirect()->to('/cpanelsuper/divisi');
         }
+    }
+    public function hapusDivisi()
+    {
+        $kode = $this->request->getVar('id');
+        $this->modulDivisi->delete($kode);
+        session()->setFlashdata('pesan', 'Divisi berhasil dihapus!');
+        return redirect()->to('/cpanelsuper/divisi');
     }
     public function list_user_cpanel()
     {
@@ -141,37 +149,65 @@ class CpanelSuper extends BaseController
     {
         $perubahan = $this->request->getVar('divisi');
         $nolap = $this->request->getVar('lap_id');
-        $filter = $this->modulLaporan->where('kode_laporan', $nolap)->findColumn('kd_divisi');
-        $filter_str = implode("|", $filter);
-        if ($filter_str == $perubahan) {
-            $this->modulLaporan->update($nolap, ['status' => 1]);
-            session()->setFlashdata('pesan', 'Data berhasil diteruskan ke Kepala Bagian');
-            return redirect()->to('/cpanelsuper/laporan_masuk');
-        } else if ($filter_str != $perubahan) {
-            $this->modulLaporan->update($nolap, ['kd_divisi' => $perubahan, 'status' => 1]);
-            session()->setFlashdata('pesan', 'Data berhasil berubah dan diteruskan ke Kepala Bagian');
-            return redirect()->to('/cpanelsuper/laporan_masuk');
+        $reject = $this->request->getVar('reject');
+        $admin = session()->get('user_id');
+        if ($reject == NULL) {
+            $filter = $this->modulLaporan->where('kode_laporan', $nolap)->findColumn('kd_divisi');
+            $filter_str = implode("|", $filter);
+            if ($filter_str == $perubahan) {
+                $this->modulLaporan->update($nolap, ['status' => 1, 'kd_user_ver' => $admin]);
+                session()->setFlashdata('pesan', 'Data berhasil diteruskan ke Kepala Bagian');
+                return redirect()->to('/cpanelsuper/laporan_masuk');
+            } else if ($filter_str != $perubahan) {
+                $this->modulLaporan->update($nolap, ['kd_divisi' => $perubahan, 'status' => 1, 'kd_user_ver' => $admin]);
+                session()->setFlashdata('pesan', 'Data berhasil berubah dan diteruskan ke Kepala Bagian');
+                return redirect()->to('/cpanelsuper/laporan_masuk');
+            } else {
+                echo "Error";
+            }
         } else {
-            echo "Error";
+            $this->modulLaporan->update($nolap, ['status' => 3, 'tanggapan' => $reject, 'kd_user_ver' => $admin]);
+            session()->setFlashdata('pesan', 'Laporan sudah disimpan');
+            return redirect()->to('/cpanelsuper/laporan_masuk');
         }
     }
     public function laporan_konfirm()
     {
-        $laporan = $this->modulLaporan->join('bio_pelapor', 'bio_pelapor.kode_identitas = laporan.kode_identitas')->where('laporan.status', 1)->findAll();
+        $db = \Config\Database::connect();
+        $kode = $db->query("SELECT laporan.kode_laporan, laporan.tgl_lap_masuk, laporan.judul_laporan, laporan.desc_laporan, bio_pelapor.nama, divisi.nama_divisi FROM laporan LEFT JOIN bio_pelapor ON laporan.kode_identitas = bio_pelapor.kode_identitas LEFT JOIN divisi ON laporan.kd_divisi = divisi.kd_divisi WHERE laporan.status = 1");
+        $listlap = $kode->getResult('array');
+
         $data = [
-            'judul' => 'Laporan Butuh Acc',
-            'lpm'   => $laporan
+            'judul' => 'Laporan Masuk',
+            'lpm'   => $listlap
         ];
 
         return view('cpanel_spuser/lap_konfirm', $data);
     }
+    public function laporan_konfirm_acc()
+    {
+        $kd_lap = $this->request->getVar('kdlap');
+        $tombol = $this->request->getVar('konfirm');
+        $admin = session()->get('user_id');
+        if ($tombol == "Terima") {
+            $this->modulLaporan->update($kd_lap, ['status' => 2, 'kd_approve' => $admin]);
+            session()->setFlashdata('pesan', 'Data berhasil disimpan!');
+            return redirect()->to('/cpanelsuper/laporan_konfirm');
+        } else if ($tombol == "Tolak") {
+            $this->modulLaporan->update($kd_lap, ['status' => 3, 'kd_approve' => $admin]);
+            session()->setFlashdata('pesan', 'Data berhasil disimpan');
+            return redirect()->to('/cpanelsuper/laporan_konfirm');
+        } else {
+            echo "Yabe";
+        }
+    }
     public function laporan_acc()
     {
-
-        $laporan = $this->modulLaporan->join('bio_pelapor', 'bio_pelapor.kode_identitas = laporan.kode_identitas')->where('laporan.status', 2)->findAll();
-
+        $db = \Config\Database::connect();
+        $kode = $db->query("SELECT laporan.tgl_lap_masuk, laporan.judul_laporan, bio_pelapor.nama, divisi.nama_divisi FROM laporan LEFT JOIN bio_pelapor ON laporan.kode_identitas = bio_pelapor.kode_identitas LEFT JOIN divisi ON laporan.kd_divisi = divisi.kd_divisi WHERE laporan.status = 2");
+        $laporan = $kode->getResult('array');
         $data = [
-            'judul' => 'Laporan Sudah di Acc',
+            'judul' => 'Laporan Diterima Kabag',
             'lpm'   => $laporan,
         ];
 
@@ -187,5 +223,17 @@ class CpanelSuper extends BaseController
         ];
 
         return view('cpanel_spuser/lap_user', $data);
+    }
+    public function list_lap_ditolak()
+    {
+        $db = \Config\Database::connect();
+        $kode = $db->query("SELECT laporan.judul_laporan, bio_pelapor.nama, divisi.nama_divisi FROM laporan LEFT JOIN bio_pelapor ON laporan.kode_identitas = bio_pelapor.kode_identitas LEFT JOIN divisi ON laporan.kd_divisi = divisi.kd_divisi WHERE laporan.status = 3");
+        $listlap = $kode->getResult('array');
+
+        $data = [
+            'judul' => 'List Laporan yang ditolak',
+            'lslap' => $listlap
+        ];
+        return view('cpanel_spuser/lap_ditolak', $data);
     }
 }
