@@ -13,7 +13,6 @@
             <th>Nama Pelapor</th>
             <th>Laporan</th>
             <th>Tembusan</th>
-            <th>Aksi</th>
         </tr>
 
     </thead>
@@ -32,7 +31,6 @@
                     echo implode("|", $nmdiv);
                     ?>
                 </td>
-                <td><a class="btn btn-danger">Hapus</a></td>
             </tr>
         <?php endforeach; ?>
     </tbody>

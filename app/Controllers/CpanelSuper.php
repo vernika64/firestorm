@@ -123,13 +123,37 @@ class CpanelSuper extends BaseController
     public function laporan_masuk()
     {
 
-        $laporan = $this->modulLaporan->join('bio_pelapor', 'bio_pelapor.kode_identitas = laporan.kode_identitas')->where('laporan.status', 0)->findAll();
+        $db = \Config\Database::connect();
+        $builder = $db->query('SELECT laporan.tgl_lap_masuk, laporan.kode_laporan, laporan.kode_identitas, laporan.judul_laporan, laporan.desc_laporan, bio_pelapor.kode_identitas, bio_pelapor.nama, divisi.nama_divisi, divisi.kd_divisi FROM laporan LEFT JOIN bio_pelapor ON laporan.kode_identitas = bio_pelapor.kode_identitas LEFT JOIN divisi ON laporan.kd_divisi = divisi.kd_divisi WHERE laporan.status = 0');
+        $divisi = $this->modulDivisi->findAll();
+        $laporan = $builder->getResult('array');
+        // $laporan = $this->modulLaporan->join('bio_pelapor', 'bio_pelapor.kode_identitas = laporan.kode_identitas')->where('laporan.status', 0)->findAll();
+        // $divisis = $this->modulDivisi->findAll();
         $data = [
             'judul' => 'Laporan Masuk',
-            'lpm'   => $laporan
+            'lpm'   => $laporan,
+            'divs'  => $divisi
         ];
 
         return view('cpanel_spuser/lap_masuk', $data);
+    }
+    public function laporan_masuk_teruskan()
+    {
+        $perubahan = $this->request->getVar('divisi');
+        $nolap = $this->request->getVar('lap_id');
+        $filter = $this->modulLaporan->where('kode_laporan', $nolap)->findColumn('kd_divisi');
+        $filter_str = implode("|", $filter);
+        if ($filter_str == $perubahan) {
+            $this->modulLaporan->update($nolap, ['status' => 1]);
+            session()->setFlashdata('pesan', 'Data berhasil diteruskan ke Kepala Bagian');
+            return redirect()->to('/cpanelsuper/laporan_masuk');
+        } else if ($filter_str != $perubahan) {
+            $this->modulLaporan->update($nolap, ['kd_divisi' => $perubahan, 'status' => 1]);
+            session()->setFlashdata('pesan', 'Data berhasil berubah dan diteruskan ke Kepala Bagian');
+            return redirect()->to('/cpanelsuper/laporan_masuk');
+        } else {
+            echo "Error";
+        }
     }
     public function laporan_konfirm()
     {
@@ -145,9 +169,10 @@ class CpanelSuper extends BaseController
     {
 
         $laporan = $this->modulLaporan->join('bio_pelapor', 'bio_pelapor.kode_identitas = laporan.kode_identitas')->where('laporan.status', 2)->findAll();
+
         $data = [
             'judul' => 'Laporan Sudah di Acc',
-            'lpm'   => $laporan
+            'lpm'   => $laporan,
         ];
 
         return view('cpanel_spuser/lap_acc', $data);
