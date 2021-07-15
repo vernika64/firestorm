@@ -13,6 +13,7 @@
             <th>Nama Pelapor</th>
             <th>Laporan</th>
             <th>Tembusan</th>
+            <th>Status</th>
         </tr>
 
     </thead>
@@ -25,6 +26,18 @@
                 <td><?= $x['nama']; ?></td>
                 <td><?= $x['judul_laporan']; ?></td>
                 <td><?= $x['nama_divisi']; ?></td>
+                <td>
+                    <?php
+                    switch ($x['status']) {
+                        case 2:
+                            echo "Diterima";
+                            break;
+                        case 3:
+                            echo "Ditolak";
+                            break;
+                    }
+                    ?>
+                </td>
             </tr>
         <?php endforeach; ?>
     </tbody>

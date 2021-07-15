@@ -30,77 +30,103 @@
                 <h1><a href="index.html" class="logo">SISLAP <span>Sistem Laporan</span></a></h1>
                 <ul class="list-unstyled components mb-5">
                     <?php
-                    $this->modelUser = new \App\Models\ModelUserCpanel();
                     $user = session()->get('user_id');
 
-                    $kk = $this->modelUser->where('username', $user)->findColumn('level');
-                    $menu = implode("|", $kk);
-                    if ($menu == 0) {
-                    ?>
+                    $menu = session()->get('level');
+                    switch ($menu) {
 
-                        <li>
-                            <a href="<?= base_url('cpanelsuper/dashboard') ?>"><span class="fa fa-home mr-3"></span> Dashboard</a>
-                        </li>
-                        <li>
-                            <a href="<?= base_url('cpanelsuper/divisi'); ?>"><span class="fa fa-home mr-3"></span> Manajemen Divisi</a>
-                        </li>
-                        <li>
-                            <a href="<?= base_url('cpanelsuper/laporan_masuk') ?>"><span class="fa fa-user mr-3"></span> Laporan Masuk</a>
-                        </li>
-                        <li>
-                            <a href="<?= base_url('cpanelsuper/laporan_konfirm') ?>"><span class="fa fa-user mr-3"></span> Laporan Konfirmasi</a>
-                        </li>
-                        <li>
-                            <a href="<?= base_url('cpanelsuper/laporan_acc') ?>"><span class="fa fa-briefcase mr-3"></span> Laporan Acc</a>
-                        </li>
-                        <li>
-                            <a href="<?= base_url('cpanelsuper/list_lap_ditolak') ?>"><span class="fa fa-briefcase mr-3"></span> List Laporan Ditolak</a>
-                        </li>
-                        <li>
-                            <a href="<?= base_url('cpanelsuper/list_user') ?>"><span class="fa fa-briefcase mr-3"></span> List Pelapor</a>
-                        </li>
-                        <li>
-                            <a href="<?= base_url('cpanelsuper/list_user_cpanel'); ?>"><span class="fa fa-briefcase mr-3"></span> List User CPanel</a>
-                        </li>
-                        <li>
-                            <a href="<?= base_url('cpanelsuper/index') ?>"><span class="fa fa-briefcase mr-3"></span> Logout</a>
-                        </li>
+                        case 0: // Jika Level Admin
+
+                    ?>
+                            <!-- Menu Sidebar -->
+                            <li>
+                                <a href="<?= base_url('cpanelsuper/dashboard') ?>"><span class="fa fa-home mr-3"></span> Dashboard</a>
+                            </li>
+                            <li>
+                                <a href="<?= base_url('cpanelsuper/divisi'); ?>"><span class="fa fa-home mr-3"></span> Manajemen Divisi</a>
+                            </li>
+                            <li>
+                                <a href="<?= base_url('cpanelsuper/laporan_masuk') ?>"><span class="fa fa-user mr-3"></span> Laporan Masuk</a>
+                            </li>
+                            <li>
+                                <a href="<?= base_url('cpanelsuper/laporan_konfirm') ?>"><span class="fa fa-user mr-3"></span> Laporan Konfirmasi</a>
+                            </li>
+                            <li>
+                                <a href="<?= base_url('cpanelsuper/laporan_acc') ?>"><span class="fa fa-briefcase mr-3"></span> Laporan Acc</a>
+                            </li>
+                            <li>
+                                <a href="<?= base_url('cpanelsuper/list_lap_ditolak') ?>"><span class="fa fa-briefcase mr-3"></span> List Laporan Ditolak</a>
+                            </li>
+                            <li>
+                                <a href="<?= base_url('cpanelsuper/list_user') ?>"><span class="fa fa-briefcase mr-3"></span> List Pelapor</a>
+                            </li>
+                            <li>
+                                <a href="<?= base_url('cpanelsuper/list_user_cpanel'); ?>"><span class="fa fa-briefcase mr-3"></span> List User CPanel</a>
+                            </li>
+                            <li>
+                                <a href="<?= base_url('cpanelsuper/index') ?>"><span class="fa fa-briefcase mr-3"></span> Logout</a>
+                            </li>
+
+                        <?php
+                            break;
+
+                        case 1: // Jika Level Kepala Bagian
+
+                        ?>
+                            <!-- Kepala Bagian -->
+
+                            <li>
+                                <a href="<?= base_url('cpanelsuper/laporan_konfirm') ?>"><span class="fa fa-user mr-3"></span> Laporan Masuk</a>
+                            </li>
+                            <li>
+                                <a href="<?= base_url('cpanelsuper/laporan_acc') ?>"><span class="fa fa-user mr-3"></span> Laporan Verified</a>
+                            </li>
+                            <li>
+                                <a href="<?= base_url('cpanelsuper/index') ?>"><span class="fa fa-briefcase mr-3"></span> Logout</a>
+                            </li>
+                        <?php
+                            break;
+
+                        case 2: // Jika Level Manajemen
+                        ?>
+                            <!-- Investigator -->
+                            <li>
+                                <a href="<?= base_url('cpanelsuper/dashboard') ?>"><span class="fa fa-home mr-3"></span> Dashboard</a>
+                            </li>
+                            <li>
+                                <a href="<?= base_url('cpanelsuper/laporan_masuk') ?>"><span class="fa fa-user mr-3"></span> Laporan Masuk</a>
+                            </li>
+                            <li>
+                                <a href="<?= base_url('cpanelsuper/laporan_konfirm') ?>"><span class="fa fa-user mr-3"></span> Laporan Konfirmasi</a>
+                            </li>
+                            <li>
+                                <a href="<?= base_url('cpanelsuper/laporan_acc') ?>"><span class="fa fa-briefcase mr-3"></span> Laporan Acc</a>
+                            </li>
+                            <li>
+                                <a href="<?= base_url('cpanelsuper/list_user') ?>"><span class="fa fa-briefcase mr-3"></span> List Pelapor</a>
+                            </li>
+                            <li>
+                                <a href="<?= base_url('cpanelsuper/index') ?>"><span class="fa fa-briefcase mr-3"></span> Logout</a>
+                            </li>
+                        <?php
+
+                            break;
+
+                        case 3:
+
+                        ?>
+                            <li>
+                                <a href="<?= base_url('cpanelsuper/laporan_masuk') ?>"><span class="fa fa-user mr-3"></span> Laporan Masuk</a>
+                            </li>
+                            <li>
+                                <a href="<?= base_url('cpanelsuper/index') ?>"><span class="fa fa-briefcase mr-3"></span> Logout</a>
+                            </li>
 
                     <?php
-                    } else if ($menu == 1) {
-                    ?>
-                        <li>
-                            <a href="<?= base_url('cpanelsuper/laporan_masuk') ?>"><span class="fa fa-user mr-3"></span> Laporan Masuk</a>
-                        </li>
-                        <li>
-                            <a href="<?= base_url('cpanelsuper/index') ?>"><span class="fa fa-briefcase mr-3"></span> Logout</a>
-                        </li>
-                    <?php
-                    } else if ($menu == 2) {
-                    ?>
-                        <li>
-                            <a href="<?= base_url('cpanelsuper/dashboard') ?>"><span class="fa fa-home mr-3"></span> Dashboard</a>
-                        </li>
-                        <li>
-                            <a href="<?= base_url('cpanelsuper/laporan_masuk') ?>"><span class="fa fa-user mr-3"></span> Laporan Masuk</a>
-                        </li>
-                        <li>
-                            <a href="<?= base_url('cpanelsuper/laporan_konfirm') ?>"><span class="fa fa-user mr-3"></span> Laporan Konfirmasi</a>
-                        </li>
-                        <li>
-                            <a href="<?= base_url('cpanelsuper/laporan_acc') ?>"><span class="fa fa-briefcase mr-3"></span> Laporan Acc</a>
-                        </li>
-                        <li>
-                            <a href="<?= base_url('cpanelsuper/list_user') ?>"><span class="fa fa-briefcase mr-3"></span> List Pelapor</a>
-                        </li>
-                        <li>
-                            <a href="<?= base_url('cpanelsuper/index') ?>"><span class="fa fa-briefcase mr-3"></span> Logout</a>
-                        </li>
-                    <?php
-                    } else if ($menu == 3) {
-                        //
+
                     }
                     ?>
+
                 </ul>
 
                 <div class="mb-5">

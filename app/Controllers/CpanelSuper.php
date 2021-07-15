@@ -104,7 +104,9 @@ class CpanelSuper extends BaseController
             return redirect()->to('cpanelsuper/index');
         } else {
             session()->set([
-                'user_id' => $user
+                'user_id' => $user,
+                'level' => $login[0]['level'],
+                'divisi'    => $login[0]['kd_divisi']
             ]);
 
             return redirect()->to('cpanelsuper/dashboard');
@@ -113,16 +115,19 @@ class CpanelSuper extends BaseController
     public function dashboard()
     {
         $nene = session()->get('user_id');
+        $level = session()->get('level');
+        $divisi = session()->get('divisi');
         if ($nene == NULL) {
             // Menambah data sesi sementara bernama error
             session()->setFlashdata('error', 'Silahkan login terlebih dahulu');
             return redirect()->to('/cpanel/index');
         } else {
             $ambilnama = $this->modulAdmin->where(['username' => $nene])->findColumn('nama');
-            $jdnama = implode("|", $ambilnama);
             $nama = [
-                'nama'  => $jdnama,
-                'id'    => $nene
+                'nama'  => $ambilnama[0],
+                'id'    => $nene,
+                'level' => $level,
+                'division' => $divisi
             ];
 
             return view('cpanel_spuser/dashboard', $nama);
@@ -130,18 +135,30 @@ class CpanelSuper extends BaseController
     }
     public function laporan_masuk()
     {
-
+        $level = session()->get('level');
+        $divisi = session()->get('divisi');
         $db = \Config\Database::connect();
-        $builder = $db->query('SELECT laporan.tgl_lap_masuk, laporan.kode_laporan, laporan.kode_identitas, laporan.judul_laporan, laporan.desc_laporan, bio_pelapor.kode_identitas, bio_pelapor.nama, divisi.nama_divisi, divisi.kd_divisi FROM laporan LEFT JOIN bio_pelapor ON laporan.kode_identitas = bio_pelapor.kode_identitas LEFT JOIN divisi ON laporan.kd_divisi = divisi.kd_divisi WHERE laporan.status = 0');
-        $divisi = $this->modulDivisi->findAll();
-        $laporan = $builder->getResult('array');
-        // $laporan = $this->modulLaporan->join('bio_pelapor', 'bio_pelapor.kode_identitas = laporan.kode_identitas')->where('laporan.status', 0)->findAll();
-        // $divisis = $this->modulDivisi->findAll();
-        $data = [
-            'judul' => 'Laporan Masuk',
-            'lpm'   => $laporan,
-            'divs'  => $divisi
-        ];
+        if ($level == 0) {
+            $builder = $db->query("SELECT laporan.tgl_lap_masuk, laporan.kode_laporan, laporan.kode_identitas, laporan.judul_laporan, laporan.desc_laporan, bio_pelapor.kode_identitas, bio_pelapor.nama, divisi.nama_divisi, divisi.kd_divisi FROM laporan LEFT JOIN bio_pelapor ON laporan.kode_identitas = bio_pelapor.kode_identitas LEFT JOIN divisi ON laporan.kd_divisi = divisi.kd_divisi WHERE laporan.status = 0");
+            $divisi = $this->modulDivisi->findAll();
+            $laporan = $builder->getResult('array');
+
+            $data = [
+                'judul' => 'Laporan Masuk',
+                'lpm'   => $laporan,
+                'divs'  => $divisi
+            ];
+        } else {
+            $builder = $db->query("SELECT laporan.tgl_lap_masuk, laporan.kode_laporan, laporan.kode_identitas, laporan.judul_laporan, laporan.desc_laporan, bio_pelapor.kode_identitas, bio_pelapor.nama, divisi.nama_divisi, divisi.kd_divisi FROM laporan LEFT JOIN bio_pelapor ON laporan.kode_identitas = bio_pelapor.kode_identitas LEFT JOIN divisi ON laporan.kd_divisi = divisi.kd_divisi WHERE laporan.status = 0 AND laporan.kd_divisi = '$divisi'");
+            $divisi = $this->modulDivisi->findAll();
+            $laporan = $builder->getResult('array');
+
+            $data = [
+                'judul' => 'Laporan Masuk',
+                'lpm'   => $laporan,
+                'divs'  => $divisi
+            ];
+        }
 
         return view('cpanel_spuser/lap_masuk', $data);
     }
@@ -173,14 +190,27 @@ class CpanelSuper extends BaseController
     }
     public function laporan_konfirm()
     {
+        $level = session()->get('level');
+        $divisi = session()->get('divisi');
         $db = \Config\Database::connect();
-        $kode = $db->query("SELECT laporan.kode_laporan, laporan.tgl_lap_masuk, laporan.judul_laporan, laporan.desc_laporan, bio_pelapor.nama, divisi.nama_divisi FROM laporan LEFT JOIN bio_pelapor ON laporan.kode_identitas = bio_pelapor.kode_identitas LEFT JOIN divisi ON laporan.kd_divisi = divisi.kd_divisi WHERE laporan.status = 1");
-        $listlap = $kode->getResult('array');
 
-        $data = [
-            'judul' => 'Laporan Masuk',
-            'lpm'   => $listlap
-        ];
+        if ($level == 0) {
+            $kode = $db->query("SELECT laporan.kode_laporan, laporan.tgl_lap_masuk, laporan.judul_laporan, laporan.desc_laporan, bio_pelapor.nama, divisi.nama_divisi FROM laporan LEFT JOIN bio_pelapor ON laporan.kode_identitas = bio_pelapor.kode_identitas LEFT JOIN divisi ON laporan.kd_divisi = divisi.kd_divisi WHERE laporan.status = 1");
+            $listlap = $kode->getResult('array');
+
+            $data = [
+                'judul' => 'Laporan Masuk',
+                'lpm'   => $listlap
+            ];
+        } else {
+            $kode = $db->query("SELECT laporan.kode_laporan, laporan.tgl_lap_masuk, laporan.judul_laporan, laporan.desc_laporan, bio_pelapor.nama, divisi.nama_divisi FROM laporan LEFT JOIN bio_pelapor ON laporan.kode_identitas = bio_pelapor.kode_identitas LEFT JOIN divisi ON laporan.kd_divisi = divisi.kd_divisi WHERE laporan.status = 1 AND laporan.kd_divisi = '$divisi'");
+            $listlap = $kode->getResult('array');
+
+            $data = [
+                'judul' => 'Laporan Masuk',
+                'lpm'   => $listlap
+            ];
+        }
 
         return view('cpanel_spuser/lap_konfirm', $data);
     }
@@ -203,13 +233,25 @@ class CpanelSuper extends BaseController
     }
     public function laporan_acc()
     {
+        $level = session()->get('level');
+        $divisi = session()->get('divisi');
+
         $db = \Config\Database::connect();
-        $kode = $db->query("SELECT laporan.tgl_lap_masuk, laporan.judul_laporan, bio_pelapor.nama, divisi.nama_divisi FROM laporan LEFT JOIN bio_pelapor ON laporan.kode_identitas = bio_pelapor.kode_identitas LEFT JOIN divisi ON laporan.kd_divisi = divisi.kd_divisi WHERE laporan.status = 2");
-        $laporan = $kode->getResult('array');
-        $data = [
-            'judul' => 'Laporan Diterima Kabag',
-            'lpm'   => $laporan,
-        ];
+        if ($level == 0) {
+            $kode = $db->query("SELECT laporan.tgl_lap_masuk, laporan.judul_laporan, laporan.status, bio_pelapor.nama, divisi.nama_divisi FROM laporan LEFT JOIN bio_pelapor ON laporan.kode_identitas = bio_pelapor.kode_identitas LEFT JOIN divisi ON laporan.kd_divisi = divisi.kd_divisi WHERE laporan.status = 2");
+            $laporan = $kode->getResult('array');
+            $data = [
+                'judul' => 'Laporan Diterima Kabag',
+                'lpm'   => $laporan,
+            ];
+        } else {
+            $kode = $db->query("SELECT laporan.tgl_lap_masuk, laporan.judul_laporan, laporan.status, bio_pelapor.nama, divisi.nama_divisi FROM laporan LEFT JOIN bio_pelapor ON laporan.kode_identitas = bio_pelapor.kode_identitas LEFT JOIN divisi ON laporan.kd_divisi = divisi.kd_divisi WHERE laporan.kd_divisi = '$divisi' AND laporan.status BETWEEN 2 AND 3");
+            $laporan = $kode->getResult('array');
+            $data = [
+                'judul' => 'Laporan yang sudah dikonfirmasi',
+                'lpm'   => $laporan,
+            ];
+        }
 
         return view('cpanel_spuser/lap_acc', $data);
     }
