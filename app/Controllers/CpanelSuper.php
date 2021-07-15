@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use CodeIgniter\Config\Config;
 use Config\Database;
+use Exception;
 
 class CpanelSuper extends BaseController
 {
@@ -11,6 +12,7 @@ class CpanelSuper extends BaseController
     protected $modulLaporan;
     protected $modulAdmin;
     protected $modulDivisi;
+    protected $modulCpanelUser;
     public function __construct()
     {
         // Menggunakan model ModelBioPelapor.php dan ModelLaporan.php
@@ -18,10 +20,11 @@ class CpanelSuper extends BaseController
         $this->modulPelapor = new \App\Models\ModelBioPelapor();
         $this->modulLaporan = new \App\Models\ModelLaporan();
         $this->modulDivisi = new \App\Models\ModelDivisi();
+        $this->modulCpanelUser = new \App\Models\ModelUserCpanel();
     }
     public function index()
     {
-        session()->destroy('user_id');
+        session()->destroy('user_id', 'level', 'divisi');
         return view('cpanel_spuser/login');
     }
     public function login()
@@ -77,13 +80,46 @@ class CpanelSuper extends BaseController
             return redirect()->to('/cpanel/index');
         } else {
             $user = $this->modulAdmin->findAll();
+            $division = $this->modulDivisi->findAll();
             $data = [
                 'nama' => 'List User Cpanel',
-                'datauser' => $user
+                'datauser' => $user,
+                'division' => $division
             ];
 
             return view('/cpanel_spuser/lap_user_cpanel', $data);
         }
+    }
+    public function buatuser()
+    {
+        $user = $this->request->getPost('user');
+        $pass = $this->request->getPost('pass');
+        $nama = $this->request->getPost('nama');
+        $div = $this->request->getPost('divisi');
+        $oto = $this->request->getPost('level');
+
+        $mafia = $this->modulCpanelUser->where('username', $user)->findColumn('username');
+
+        try {
+            if ($oto == 0) {
+                session()->setFlashdata('error', "Mohon maaf, anda bukan pembuat sistem!");
+            } else if ($oto >= 4) {
+                session()->setFlashdata('error', "Mohon maaf, level tidak ditemukan di sistem!");
+            } else {
+                $this->modulCpanelUser->save([
+                    'username'  => $user,
+                    'password'  => $pass,
+                    'nama'      => $nama,
+                    'kd_divisi' => $div,
+                    'level'     => $oto
+                ]);
+                session()->setFlashdata('pesan', "User $nama berhasil didaftarkan ke dalam sistem!");
+            }
+        } catch (Exception $e) {
+            session()->setFlashdata('error', "Mohon maaf, username sudah terdaftar!");
+        }
+
+        return redirect()->to('/cpanelsuper/list_user_cpanel');
     }
     public function masuk()
     {

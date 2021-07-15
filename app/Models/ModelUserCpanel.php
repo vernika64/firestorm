@@ -14,7 +14,13 @@ class ModelUserCpanel extends Model
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
-	protected $allowedFields        = [];
+	protected $allowedFields        = [
+		'username',
+		'password',
+		'nama',
+		'kd_divisi',
+		'level'
+	];
 
 	// Dates
 	protected $useTimestamps        = false;
