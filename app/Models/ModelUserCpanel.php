@@ -23,10 +23,10 @@ class ModelUserCpanel extends Model
 	];
 
 	// Dates
-	protected $useTimestamps        = false;
+	protected $useTimestamps        = true;
 	protected $dateFormat           = 'datetime';
-	// protected $createdField         = 'created_at';
-	// protected $updatedField         = 'updated_at';
+	protected $createdField         = 'tanggal_reg';
+	protected $updatedField         = 'tanggal_upd';
 	// protected $deletedField         = 'deleted_at';
 
 	// Validation

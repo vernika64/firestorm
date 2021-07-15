@@ -99,5 +99,6 @@ endif;
         <?php endforeach; ?>
     </tbody>
 </table>
+<?= $pog->links('tabel', 'cpanelsuper_pager'); ?>
 
 <?= $this->endSection(); ?>

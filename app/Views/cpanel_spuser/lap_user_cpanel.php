@@ -93,7 +93,7 @@ if (session()->getFlashdata('pesan') != NULL) {
     </thead>
     <tbody>
         <?php
-        $no = 1;
+        $no = 1 + ($batashal * ($halaman - 1));
         foreach ($datauser as $k) :
         ?>
             <tr>
@@ -182,5 +182,6 @@ if (session()->getFlashdata('pesan') != NULL) {
         ?>
     </tbody>
 </table>
+<?= $pager->links('datauser', 'cpanelsuper_pager'); ?>
 
 <?= $this->endSection(); ?>

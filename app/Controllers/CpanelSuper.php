@@ -34,11 +34,12 @@ class CpanelSuper extends BaseController
     }
     public function divisi()
     {
-        $tabel = $this->modulDivisi->findAll();
+        $tabel = $this->modulDivisi->paginate(5, 'tabel');
 
         $data = [
             'judul' => 'Manajemen Divisi',
-            'tabel'  => $tabel
+            'tabel'  => $tabel,
+            'pog'   => $this->modulDivisi->pager
         ];
         return view('cpanel_spuser/lap_divisi', $data);
     }
@@ -73,18 +74,25 @@ class CpanelSuper extends BaseController
     }
     public function list_user_cpanel()
     {
+        $currentPage = $this->request->getGet('page_datauser') ? $this->request->getGet('page_datauser') : 1;
+
+
         $nene = session()->get('user_id');
         if ($nene == NULL) {
             // Menambah data sesi sementara bernama error
             session()->setFlashdata('error', 'Silahkan login terlebih dahulu');
             return redirect()->to('/cpanel/index');
         } else {
-            $user = $this->modulAdmin->findAll();
+            $bts = 5;
+            $user = $this->modulAdmin->paginate($bts, 'datauser');
             $division = $this->modulDivisi->findAll();
             $data = [
                 'nama' => 'List User Cpanel',
                 'datauser' => $user,
-                'division' => $division
+                'division' => $division,
+                'pager'    => $this->modulAdmin->pager,
+                'halaman'  => $currentPage,
+                'batashal' => $bts
             ];
 
             return view('/cpanel_spuser/lap_user_cpanel', $data);
